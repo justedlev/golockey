@@ -1,0 +1,11 @@
+version: "3.9"
+name: justedlev-sso
+services:
+  service-registry:
+    build: .
+    container_name: justedlev-sso
+    image: justedlev/sso:1.0.0
+    env_file:
+      - ""
+    ports:
+      - "0:8080"
