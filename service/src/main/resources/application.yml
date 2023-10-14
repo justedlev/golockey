@@ -13,16 +13,6 @@ logging:
 spring:
   application:
     name: just-lockey
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${keycloak.issuer-uri}
-          jwk-set-uri: ${keycloak.jwk-set-uri}
-        opaquetoken:
-          introspection-uri: ${keycloak.introspection-uri}
-          client-id: ${keycloak.client-id}
-          client-secret: ${keycloak.client-secret}
   devtools:
     restart:
       enabled: false
@@ -61,10 +51,6 @@ spring:
 
 springdoc:
   swagger-ui:
-    oauth:
-      realm: ${keycloak.realm}
-      client-id: ${keycloak.client.id}
-      client-secret: ${keycloak.client.secret}
     operations-sorter: method
   show-actuator: true
   api-docs:
