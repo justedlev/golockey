@@ -1,1 +1,104 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+  error:
+    include-stacktrace: never
 
+logging:
+  file:
+    name: ${logging.file.path}/latest.log
+    path: ./.logs
+
+spring:
+  application:
+    name: just-lockey
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak.issuer-uri}
+          jwk-set-uri: ${keycloak.jwk-set-uri}
+        opaquetoken:
+          introspection-uri: ${keycloak.introspection-uri}
+          client-id: ${keycloak.client-id}
+          client-secret: ${keycloak.client-secret}
+  devtools:
+    restart:
+      enabled: false
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      org:
+        hibernate:
+          envers:
+            default_schema: history
+            audit_table_suffix: _history
+            revision_field_name: rev_id
+            revision_type_field_name: rev_type
+            store_data_at_delete: true
+            audit_table_prefix:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        default_schema: just-lockey
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+springdoc:
+  swagger-ui:
+    oauth:
+      realm: ${keycloak.realm}
+      client-id: ${keycloak.client.id}
+      client-secret: ${keycloak.client.secret}
+    operations-sorter: method
+  show-actuator: true
+  api-docs:
+    version: openapi_3_1
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+    app-group-name: justedlev
+    appname: ${spring.application.name}
+  client:
+    service-url:
+      default-zone: ${configuration.service-registry.url}
+
+management:
+  info:
+    build:
+      enabled: true
+    os:
+      enabled: true
+    defaults:
+      enabled: true
+    java:
+      enabled: true
+  endpoint:
+    health:
+      enabled: true
+    restart:
+      enabled: true
+    refresh:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# Custom properties
